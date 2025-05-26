@@ -70,22 +70,33 @@ condition is true input is 1 else input is 0, weights for Favorite hero-0.2, her
 a movie.Calculate the Accuracy.
 """
 
-def perceptron(inputs, weights, bias):
-    activation = sum(i * w for i, w in zip(inputs, weights)) + bias
-    return 1 if activation >= 0 else 0
+import numpy as np
 
-inputs = [1, 1, 1]
-weights = [0.2, 0.4, 0.2]
+def predict(inputs, weights, bias):
+  linear_combination = np.dot(inputs, weights) + bias
+  return 1 if linear_combination >= 0 else 0
+
+def calculate_accuracy(inputs, targets, weights, bias):
+  correct_predictions = 0
+  for i in range(len(inputs)):
+    prediction = predict(inputs[i], weights, bias)
+    if prediction == targets[i]:
+      correct_predictions += 1
+  return correct_predictions / len(inputs)
+
+
+inputs = np.array([
+    [1, 1, 1],
+    [0, 1, 1],
+    [1, 0, 0],
+    [0, 0, 0]
+])
+targets = np.array([1, 1, 0, 0])
+weights = np.array([0.2, 0.4, 0.2])
 bias = -0.5
 
-expected_output = 1
-
-output = perceptron(inputs, weights, bias)
-
-accuracy = 100 if output == expected_output else 0
-
-print("Output:", output)
-print("Accuracy:", accuracy, "%")
+accuracy = calculate_accuracy(inputs, targets, weights, bias)
+print(f"Accuracy: {accuracy}")
 
 """### ***`4`***
 Write a program in deep learning to apply image processing operations such as
